@@ -1,0 +1,11 @@
+- defaults:
+    link:
+      relink: true
+
+- clean: ['~']
+
+- link:
+    ~/.spacemacs:
+    ~/.zshrc: zsh
+    ~/.fonts: fonts
+    ~/.lein/profiles.clj: profiles.clj
