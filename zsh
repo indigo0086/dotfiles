@@ -30,7 +30,7 @@ ZSH_THEME="bira"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git git-flow tmux gitfast)
+plugins=(git git-flow gitfast debian encode64 lein wd)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -66,6 +66,8 @@ alias spotify="/usr/bin/spotify --force-device-scale-factor=2"
 alias keygen="ssh-keygen -t rsa -b 4096 -C"
 alias network-restart="sudo service network-manager restart"
 alias rmrf='rm -rf'
+alias tlp-check='tlp-stat -s'
+alias tlp-start='tlp-start'
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
