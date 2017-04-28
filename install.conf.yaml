@@ -9,3 +9,4 @@
     ~/.zshrc: zsh
     ~/.fonts: fonts
     ~/.lein/profiles.clj: profiles.clj
+    ~/.config/htop/htoprc: htoprc

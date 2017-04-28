@@ -1,0 +1,9 @@
+All targets have been cleaned
+Link exists ~/.fonts -> /home/indigo0086/dotfiles/fonts
+Link exists ~/.zshrc -> /home/indigo0086/dotfiles/zsh
+Link exists ~/.spacemacs -> /home/indigo0086/dotfiles/spacemacs
+Link exists ~/.lein/profiles.clj -> /home/indigo0086/dotfiles/profiles.clj
+~/.config/htop/htoprc already exists but is a regular file or directory
+Some links were not successfully set up
+
+==> Some tasks were not executed successfully
