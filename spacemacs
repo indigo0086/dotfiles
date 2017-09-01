@@ -31,6 +31,8 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     ruby
+     restclient
      yaml
      html
      javascript
@@ -50,6 +52,8 @@ values."
      org
      syntax-checking
      version-control
+     chrome
+     python
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -60,7 +64,9 @@ values."
                                       evil-smartparens
                                       evil-lisp-state
                                       sudo-save
-                                      (evil-adjust :location (recipe :fetcher github :repo "troyp/evil-adjust")))
+                                      clojars
+                                      (evil-adjust :location (recipe :fetcher github :repo "troyp/evil-adjust"))
+                                      )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -295,11 +301,6 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-  ;; (require 'evil-adjust)
-  ;; (evil-adjust)
-  (require 'magit-gitflow)
-  (add-hook 'magit-mode-hook 'turn-on-magit-gitflow)
-
   ;; (add-hook 'clojure-mode-hook 'paredit-mode)
   (add-hook 'clojure-mode-hook #'smartparens-strict-mode)
   (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
@@ -321,29 +322,47 @@ layers configuration
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+  (require 'evil-adjust)
+  (evil-adjust)
   (setq-default evil-escape-delay 0.3)
-  ;; (setq cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
   (spacemacs/toggle-golden-ratio-on)
-  (spacemacs/set-leader-keys "g F" 'magit-gitflow-popup)
+  (spacemacs/set-leader-keys
+    "g F" 'magit-gitflow-popup)
 
+  (setq-default dotspacemacs-configuration-layers '((python :variables python-enable-yapf-format-on-save t)))
   ;; (setq org-todo-keywords (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
   ;;                                 (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
 
-  (setq org-todo-keyword-faces (quote (("TODO" :foreground "red" :weight bold)
-                                       ("NEXT" :foreground "SlateBlue" :weight bold)
-                                       ("DONE" :foreground "forest green" :weight bold)
-                                       ("WAITING" :foreground "orange" :weight bold)
-                                       ("HOLD" :foreground "magenta" :weight bold)
-                                       ("CANCELLED" :foreground "forest green" :weight bold)
-                                       ("MEETING" :foreground "forest green" :weight bold)
-                                       ("PHONE" :foreground "forest green" :weight bold)))
-        cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))"
-        evil-escape-delay 0.3
-        org-use-fast-todo-selection t
-        org-todo-keywords (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-                                  (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING")))
-        aggressive-indent-comments-too nil
-        )
+  (defun helm-clojure-headlines ()
+    "Display headlines for the current Clojure file."
+    (interactive)
+    (helm-mode t)
+    (helm :sources '(((name . "Clojure Headlines")
+                      (volatile)
+                      (headline "^[;(]")))))
+
+  (spacemacs/set-leader-keys-for-major-mode 'clojurescript-mode
+    "o c h" 'helm-clojure-headlines)
+
+  (spacemacs/set-leader-keys-for-major-mode 'clojure-mode
+    "o c h" 'helm-clojure-headlines)
+
+  (setq
+   ;; org-todo-keyword-faces (quote (("TODO" :foreground "red" :weight bold)
+   ;;                                ("NEXT" :foreground "SlateBlue" :weight bold)
+   ;;                                ("DONE" :foreground "forest green" :weight bold)
+   ;;                                ("WAITING" :foreground "orange" :weight bold)
+   ;;                                ("HOLD" :foreground "magenta" :weight bold)
+   ;;                                ("CANCELLED" :foreground "forest green" :weight bold)
+   ;;                                ("MEETING" :foreground "forest green" :weight bold)
+   ;;                                ("PHONE" :foreground "forest green" :weight bold)))
+   cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))"
+   evil-escape-delay 0.3
+   org-use-fast-todo-selection t
+   org-todo-keywords (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+                             (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING")))
+   aggressive-indent-comments-too nil)
+
   ;; (setq org-use-fast-todo-selection t)
   (global-auto-revert-mode 1)
 )
@@ -363,7 +382,7 @@ you should place your code here."
  '(js-indent-level 2)
  '(package-selected-packages
    (quote
-    (diminish git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter diff-hl gitignore-mode pos-tip edn paredit peg queue f yaml-mode async winum fuzzy evil-adjust evil-smartparens evil multiple-cursors avy dash org packed auto-complete 4clojure markdown-mode inflections bind-key iedit smartparens bind-map highlight flycheck company request helm-core yasnippet with-editor hydra web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode projectile helm magit magit-popup git-commit powerline cider clojure-mode org-projectile pcache org-present org-pomodoro alert log4e gntp org-download htmlize gnuplot ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spacemacs-theme spaceline smeargle restart-emacs rainbow-delimiters quelpa popwin persp-mode pcre2el paradox orgit org-plus-contrib org-bullets open-junk-file neotree move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md flycheck-pos-tip flycheck-elm flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu elm-mode elisp-slime-nav dumb-jump define-word company-statistics column-enforce-mode clojure-snippets clj-refactor clean-aindent-mode cider-eval-sexp-fu badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
+    (rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic restclient-helm ob-restclient ob-http company-restclient restclient know-your-http-well request-deferred deferred clojars gmail-message-mode ham-mode html-to-markdown flymd edit-server evil-adjust diminish git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter diff-hl gitignore-mode pos-tip edn paredit peg queue f yaml-mode async winum fuzzy evil-smartparens evil multiple-cursors avy dash org packed auto-complete 4clojure markdown-mode inflections bind-key iedit smartparens bind-map highlight flycheck company request helm-core yasnippet with-editor hydra web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode projectile helm magit magit-popup git-commit powerline cider clojure-mode org-projectile pcache org-present org-pomodoro alert log4e gntp org-download htmlize gnuplot ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spacemacs-theme spaceline smeargle restart-emacs rainbow-delimiters quelpa popwin persp-mode pcre2el paradox orgit org-plus-contrib org-bullets open-junk-file neotree move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md flycheck-pos-tip flycheck-elm flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu elm-mode elisp-slime-nav dumb-jump define-word company-statistics column-enforce-mode clojure-snippets clj-refactor clean-aindent-mode cider-eval-sexp-fu badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
  '(paradox-github-token t)
  '(projectile-globally-ignored-directories
    (quote

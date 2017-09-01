@@ -13,7 +13,7 @@ export ZSH=/home/indigo0086/.oh-my-zsh
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="bira"
+ZSH_THEME="sepshell"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # COMPLETION_WAITING_DOTS="true"
@@ -69,5 +69,25 @@ alias rmrf='rm -rf'
 alias tlp-check='tlp-stat -s'
 alias tlp-start='tlp-start'
 
+export TERM=xterm-256color
 export NVM_DIR="$HOME/.nvm"
+export PYTHON_USERBASE=~/python_userbase
+export EDITOR="ec"
+export VISUAL="ec"
+
+alias ec="emacsclient -c -n -a ''"
+alias et="emacsclient -t -a ''"
+alias emacsbare="emacs -nw -Q --eval \"(load-theme 'misterioso)\""
+alias eb="emacsbare"
+alias e="ec"
+alias vim="e"
+alias vi="e"
+
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+export PATH="/home/indigo0086/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"

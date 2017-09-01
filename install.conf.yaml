@@ -6,7 +6,10 @@
 
 - link:
     ~/.spacemacs:
+    ~/.spacemacs.d:
     ~/.zshrc: zsh
     ~/.fonts: fonts
     ~/.lein/profiles.clj: profiles.clj
     ~/.config/htop/htoprc: htoprc
+    ~/.bash_profile:
+    ~/.profile:
