@@ -5,6 +5,9 @@ path+=($NPM_PACKAGES)
 path+=($NPM_PACKAGES/bin)
 path+=($HOME/bin)
 path+=(/usr/local/bin)
+path+=($HOME/.yarn/bin)
+
+
 # export PATH=$NPM_PACKAGES:$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
@@ -13,7 +16,7 @@ export ZSH=/home/indigo0086/.oh-my-zsh
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="sepshell"
+ZSH_THEME="ys"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # COMPLETION_WAITING_DOTS="true"
@@ -30,7 +33,7 @@ ZSH_THEME="sepshell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git git-flow gitfast debian encode64 lein wd)
+plugins=(git git-flow git-flow-completion tmux tmuxinator gitfast debian encode64 lein wd)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -79,15 +82,12 @@ alias ec="emacsclient -c -n -a ''"
 alias et="emacsclient -t -a ''"
 alias emacsbare="emacs -nw -Q --eval \"(load-theme 'misterioso)\""
 alias eb="emacsbare"
-alias e="ec"
-alias vim="e"
-alias vi="e"
+alias arcadia="git clone https://github.com/arcadia-unity/Arcadia.git"
+
+source ~/bin/tmuxinator.zsh
 
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
-export PATH="/home/indigo0086/.pyenv/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
