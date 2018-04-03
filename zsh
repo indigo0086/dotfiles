@@ -6,6 +6,7 @@ path+=($NPM_PACKAGES/bin)
 path+=($HOME/bin)
 path+=(/usr/local/bin)
 path+=($HOME/.yarn/bin)
+path+=($HOME/.cask/bin)
 
 
 # export PATH=$NPM_PACKAGES:$HOME/bin:/usr/local/bin:$PATH
